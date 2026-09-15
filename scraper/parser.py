@@ -17,11 +17,9 @@ def parse_search_results(html_content: str) -> List[Dict[str, str]]:
         return results
 
     soup = BeautifulSoup(html_content, "html.parser")
-    # Search for table containing search results
     table = soup.find("table", id=re.compile(r".*MainContent.*Search.*", re.I)) or soup.find("table", class_=re.compile(r".*grid.*|.*table.*", re.I))
 
     if not table:
-        # Fallback to finding any table with rows containing links to CorpSearchSummary
         tables = soup.find_all("table")
         for tbl in tables:
             if tbl.find("a", href=re.compile(r"CorpSearchSummary|CorpSummary", re.I)):
@@ -39,7 +37,6 @@ def parse_search_results(html_content: str) -> List[Dict[str, str]]:
         if not cells:
             continue
 
-        # Check if header
         cell_texts = [c.get_text(strip=True) for c in cells]
         if any("entity" in txt.lower() or "id" in txt.lower() or "name" in txt.lower() for txt in cell_texts):
             if not header_found and row.find("th"):
@@ -51,7 +48,6 @@ def parse_search_results(html_content: str) -> List[Dict[str, str]]:
             href = link["href"]
             entity_name = link.get_text(strip=True)
 
-            # Extract entity ID from href or adjacent cells
             id_match = re.search(r"sys_id=(\d+)", href, re.I) or re.search(r"id=(\d+)", href, re.I) or re.search(r"IDNum=(\d+)", href, re.I)
             entity_id = id_match.group(1) if id_match else (cell_texts[0] if len(cell_texts) > 1 and cell_texts[0].isdigit() else "")
 
@@ -88,11 +84,16 @@ def parse_entity_summary(html_content: str) -> Dict[str, Any]:
         "officers": [],
         "filings": [],
         "annual_reports": [],
-        "financial_insights": {},
+        "financial_insights": {
+            "total_assets": "N/A",
+            "capital_stock": "N/A",
+            "gross_revenue": "N/A",
+            "asset_growth_rate": "N/A",
+            "financial_health_status": "Active Filings Recorded"
+        },
         "officer_changes": []
     }
 
-    # Extract labels and values from table cells or spans
     for span_id, key in [
         ("MainContent_lblEntityName", "entity_name"),
         ("MainContent_lblIDNum", "entity_id"),
@@ -104,15 +105,18 @@ def parse_entity_summary(html_content: str) -> Dict[str, Any]:
         if element:
             data[key] = element.get_text(strip=True)
 
-    # General text matching if elements not found by ID
     text_content = soup.get_text()
     if not data["entity_name"]:
-        m = re.search(r"Entity Name:\s*([^\n\r]+)", text_content, re.I)
+        m = re.search(r"Summary for:\s*([^\n\r]+)", text_content, re.I) or re.search(r"Entity Name:\s*([^\n\r]+)", text_content, re.I)
         if m: data["entity_name"] = m.group(1).strip()
 
     if not data["entity_id"]:
-        m = re.search(r"Identification Number:\s*(\d+)", text_content, re.I)
+        m = re.search(r"ID Number:\s*(\d+)", text_content, re.I) or re.search(r"Identification Number:\s*(\d+)", text_content, re.I)
         if m: data["entity_id"] = m.group(1).strip()
+
+    if not data["organization_date"]:
+        m = re.search(r"Date of Organization[^:]*:\s*([\d\-\/]+)", text_content, re.I)
+        if m: data["organization_date"] = m.group(1).strip()
 
     # Parse Officers / Managers Table
     officers = []
@@ -135,6 +139,24 @@ def parse_entity_summary(html_content: str) -> Dict[str, Any]:
                         })
 
     data["officers"] = officers
+
+    # Parse Filings using parse_filing_history
+    filings = parse_filing_history(html_content)
+    data["filings"] = filings
+
+    # Financial insights extraction from HTML tables if present
+    assets_m = re.search(r"Total Assets:?\s*\$?([\d,]+)", text_content, re.I)
+    if assets_m:
+        data["financial_insights"]["total_assets"] = f"${assets_m.group(1)}"
+
+    capital_m = re.search(r"Capital Stock:?\s*\$?([\d,]+)", text_content, re.I)
+    if capital_m:
+        data["financial_insights"]["capital_stock"] = f"${capital_m.group(1)}"
+
+    revenue_m = re.search(r"Gross Revenue:?\s*\$?([\d,]+)", text_content, re.I)
+    if revenue_m:
+        data["financial_insights"]["gross_revenue"] = f"${revenue_m.group(1)}"
+
     return data
 
 
@@ -147,7 +169,7 @@ def parse_filing_history(html_content: str) -> List[Dict[str, Any]]:
 
     for tbl in soup.find_all("table"):
         tbl_text = tbl.get_text().lower()
-        if "filing" in tbl_text or "document" in tbl_text or "annual report" in tbl_text:
+        if "filing" in tbl_text or "document" in tbl_text or "annual report" in tbl_text or "view filings" in tbl_text:
             rows = tbl.find_all("tr")
             for r in rows:
                 cols = [c.get_text(strip=True) for c in r.find_all(["td", "th"])]
@@ -166,6 +188,19 @@ def parse_filing_history(html_content: str) -> List[Dict[str, Any]]:
                             "url": url
                         })
 
+    # Also parse option tags inside filing selects if available
+    select_tag = soup.find("select", id=re.compile(r".*filing.*|.*document.*", re.I)) or soup.find("select")
+    if select_tag:
+        for opt in select_tag.find_all("option"):
+            opt_text = opt.get_text(strip=True)
+            if opt_text and opt_text.lower() != "select":
+                filings.append({
+                    "document_name": opt_text,
+                    "filing_date": "N/A",
+                    "document_id": opt.get("value", "DOC-OPT"),
+                    "url": ""
+                })
+
     return filings
 
 
@@ -174,7 +209,6 @@ def extract_officer_changes(annual_reports_or_filings: List[Dict[str, Any]]) -> 
     Analyzes historical filings and annual reports to track changes in LLC managers and officers over time.
     """
     changes = []
-    # Sorted chronologically
     sorted_filings = sorted(
         annual_reports_or_filings,
         key=lambda x: x.get("filing_date", ""),
@@ -187,13 +221,11 @@ def extract_officer_changes(annual_reports_or_filings: List[Dict[str, Any]]) -> 
         doc_name = filing.get("document_name", "Annual Report")
         officers_in_filing = filing.get("officers", [])
 
-        current_names = set()
         for off in officers_in_filing:
             name = off.get("name")
             role = off.get("title", "Manager")
             if not name:
                 continue
-            current_names.add(name)
 
             if name not in seen_officers:
                 changes.append({

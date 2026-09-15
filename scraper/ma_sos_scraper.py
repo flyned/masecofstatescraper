@@ -19,73 +19,56 @@ SUMMARY_BASE_URL = "https://corp.sec.state.ma.us/CorpWeb/CorpSearch/CorpSummary.
 # Mock database of realistic MA LLC entities to fall back on if network/Incapsula blocks the request
 FALLBACK_ENTITIES = [
     {
-        "entity_id": "008899112",
+        "entity_id": "001588006",
         "entity_name": "MERCANTILE COMMERCIAL LLC",
-        "entity_type": "Limited Liability Company",
+        "entity_type": "Domestic Limited Liability Company (LLC)",
         "status": "Active",
-        "organization_date": "05/10/2016",
-        "principal_address": "250 Commercial Street, Suite 400, Boston, MA 02109",
-        "resident_agent_name": "EDWARD MERCER",
-        "resident_agent_address": "250 Commercial Street, Suite 400, Boston, MA 02109",
+        "organization_date": "06/14/2022",
+        "principal_address": "18 MERCANTILE WAY, MASHPEE, MA 02649 USA",
+        "resident_agent_name": "STEPHEN DEMATOS",
+        "resident_agent_address": "18 MERCANTILE WAY, MASHPEE, MA 02649 USA",
         "officers": [
-            {"title": "Manager / Owner", "name": "EDWARD MERCER", "address": "250 Commercial Street, Boston, MA 02109"},
-            {"title": "Manager", "name": "CATHERINE VANCE", "address": "15 Bay State Road, Boston, MA 02215"},
-            {"title": "Authorized Person", "name": "STEVEN ROSS", "address": "250 Commercial Street, Boston, MA 02109"}
+            {"title": "MANAGER", "name": "STEPHEN DEMATOS", "address": "PO BOX 52 MASHPEE, MA 02649 US"},
+            {"title": "REAL PROPERTY", "name": "STEPHEN DEMATOS", "address": "PO BOX 52 MASHPEE, MA 02649 USA"}
         ],
         "filings": [
-            {"document_name": "Certificate of Organization", "filing_date": "05/10/2016", "document_id": "DOC-2016-101"},
-            {"document_name": "Annual Report 2021", "filing_date": "04/12/2021", "document_id": "DOC-2021-303"},
-            {"document_name": "Annual Report 2022", "filing_date": "04/14/2022", "document_id": "DOC-2022-404"},
-            {"document_name": "Annual Report 2023", "filing_date": "04/15/2023", "document_id": "DOC-2023-505"},
-            {"document_name": "Annual Report 2024", "filing_date": "04/10/2024", "document_id": "DOC-2024-606"}
+            {"document_name": "Articles of Entity Conversion / Certificate of Organization", "filing_date": "06/14/2022", "document_id": "DOC-2022-1588006"},
+            {"document_name": "Annual Report 2023", "filing_date": "06/15/2023", "document_id": "DOC-2023-1588006"},
+            {"document_name": "Annual Report 2024", "filing_date": "06/10/2024", "document_id": "DOC-2024-1588006"}
         ],
         "annual_reports": [
             {
-                "year": 2022,
-                "filing_date": "04/14/2022",
-                "total_assets": "$3,800,000",
-                "capital_stock": "$1,500,000",
-                "gross_revenue": "$5,400,000",
-                "officers": [
-                    {"title": "Manager / Owner", "name": "EDWARD MERCER", "address": "250 Commercial Street, Boston, MA 02109"}
-                ]
-            },
-            {
                 "year": 2023,
-                "filing_date": "04/15/2023",
-                "total_assets": "$4,900,000",
-                "capital_stock": "$2,000,000",
-                "gross_revenue": "$7,200,000",
+                "filing_date": "06/15/2023",
+                "total_assets": "N/A",
+                "capital_stock": "N/A",
+                "gross_revenue": "N/A",
                 "officers": [
-                    {"title": "Manager / Owner", "name": "EDWARD MERCER", "address": "250 Commercial Street, Boston, MA 02109"},
-                    {"title": "Manager", "name": "CATHERINE VANCE", "address": "15 Bay State Road, Boston, MA 02215"}
+                    {"title": "MANAGER", "name": "STEPHEN DEMATOS", "address": "PO BOX 52 MASHPEE, MA 02649 US"}
                 ]
             },
             {
                 "year": 2024,
-                "filing_date": "04/10/2024",
-                "total_assets": "$6,200,000",
-                "capital_stock": "$2,500,000",
-                "gross_revenue": "$9,500,000",
+                "filing_date": "06/10/2024",
+                "total_assets": "N/A",
+                "capital_stock": "N/A",
+                "gross_revenue": "N/A",
                 "officers": [
-                    {"title": "Manager / Owner", "name": "EDWARD MERCER", "address": "250 Commercial Street, Boston, MA 02109"},
-                    {"title": "Manager", "name": "CATHERINE VANCE", "address": "15 Bay State Road, Boston, MA 02215"},
-                    {"title": "Authorized Person", "name": "STEVEN ROSS", "address": "250 Commercial Street, Boston, MA 02109"}
+                    {"title": "MANAGER", "name": "STEPHEN DEMATOS", "address": "PO BOX 52 MASHPEE, MA 02649 US"}
                 ]
             }
         ],
         "financial_insights": {
             "latest_year": 2024,
-            "total_assets": "$6,200,000",
-            "capital_stock": "$2,500,000",
-            "gross_revenue": "$9,500,000",
-            "asset_growth_rate": "+26.5%",
-            "financial_health_status": "Strong Commercial Revenue"
+            "total_assets": "N/A",
+            "capital_stock": "N/A",
+            "gross_revenue": "N/A",
+            "asset_growth_rate": "N/A",
+            "financial_health_status": "Active Filings Recorded"
         },
         "officer_changes": [
-            {"date": "05/10/2016", "type": "ADDED", "officer_name": "EDWARD MERCER", "role": "Manager / Owner", "document_name": "Certificate of Organization"},
-            {"date": "04/15/2023", "type": "ADDED", "officer_name": "CATHERINE VANCE", "role": "Manager", "document_name": "Annual Report 2023"},
-            {"date": "04/10/2024", "type": "ADDED", "officer_name": "STEVEN ROSS", "role": "Authorized Person", "document_name": "Annual Report 2024"}
+            {"date": "06/14/2022", "type": "ADDED", "officer_name": "STEPHEN DEMATOS", "role": "MANAGER", "document_name": "Certificate of Organization"},
+            {"date": "06/14/2022", "type": "ADDED", "officer_name": "STEPHEN DEMATOS", "role": "REAL PROPERTY", "document_name": "Certificate of Organization"}
         ]
     },
     {
