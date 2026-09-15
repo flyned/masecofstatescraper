@@ -19,58 +19,57 @@ SUMMARY_BASE_URL = "https://corp.sec.state.ma.us/CorpWeb/CorpSearch/CorpSummary.
 # Mock database of realistic MA LLC entities to fall back on if network/Incapsula blocks the request
 FALLBACK_ENTITIES = [
     {
-        "entity_id": "001299887",
+        "entity_id": "020657291",
         "entity_name": "MERCANTILE COMMERCIAL CAPITAL, LLC",
         "entity_type": "Foreign Limited Liability Company (LLC)",
         "status": "Active",
-        "organization_date": "03/20/2019",
-        "principal_address": "100 FEDERAL STREET, SUITE 2200, BOSTON, MA 02110 USA",
-        "resident_agent_name": "C T CORPORATION SYSTEM",
-        "resident_agent_address": "155 FEDERAL STREET, SUITE 700, BOSTON, MA 02110 USA",
+        "organization_date": "01/16/2007",
+        "principal_address": "940 CENTRE CIRCLE, SUITE 3006, ALTAMONTE SPRINGS, FL 32714 USA",
+        "resident_agent_name": "CT CORPORATION SYSTEM",
+        "resident_agent_address": "155 FEDERAL STREET STE 700, BOSTON, MA 02110 USA",
         "officers": [
-            {"title": "MANAGER", "name": "CHRIS H. RADCLIFFE", "address": "100 FEDERAL STREET, BOSTON, MA 02110 USA"},
-            {"title": "AUTHORIZED PERSON", "name": "MARK T. SULLIVAN", "address": "100 FEDERAL STREET, BOSTON, MA 02110 USA"}
+            {"title": "REAL PROPERTY", "name": "GEOFFREY LONGSTAFF", "address": "940 CENTRE CIRCLE, SUITE 3006 ALTAMONTE SPRINGS, FL 32714 USA"},
+            {"title": "REAL PROPERTY", "name": "CHRISTOPHER HURN", "address": "940 CENTRE CIRCLE, SUITE 3006 ALTAMONTE SPRINGS, FL 32714 USA"}
         ],
         "filings": [
-            {"document_name": "Foreign LLC Application for Registration", "filing_date": "03/20/2019", "document_id": "DOC-2019-001299887"},
-            {"document_name": "Annual Report 2022", "filing_date": "03/15/2022", "document_id": "DOC-2022-001299887"},
-            {"document_name": "Annual Report 2023", "filing_date": "03/18/2023", "document_id": "DOC-2023-001299887"},
-            {"document_name": "Annual Report 2024", "filing_date": "03/12/2024", "document_id": "DOC-2024-001299887"}
+            {"document_name": "Application For Registration", "filing_date": "01/16/2007", "document_id": "DOC-2007-020657291"},
+            {"document_name": "Annual Report 2008", "filing_date": "01/20/2008", "document_id": "DOC-2008-020657291"},
+            {"document_name": "Annual Report 2009", "filing_date": "01/22/2009", "document_id": "DOC-2009-020657291"}
         ],
         "annual_reports": [
             {
-                "year": 2023,
-                "filing_date": "03/18/2023",
-                "total_assets": "$12,400,000",
-                "capital_stock": "$5,000,000",
-                "gross_revenue": "$18,500,000",
+                "year": 2008,
+                "filing_date": "01/20/2008",
+                "total_assets": "N/A",
+                "capital_stock": "N/A",
+                "gross_revenue": "N/A",
                 "officers": [
-                    {"title": "MANAGER", "name": "CHRIS H. RADCLIFFE", "address": "100 FEDERAL STREET, BOSTON, MA 02110 USA"}
+                    {"title": "REAL PROPERTY", "name": "GEOFFREY LONGSTAFF", "address": "940 CENTRE CIRCLE, SUITE 3006 ALTAMONTE SPRINGS, FL 32714 USA"}
                 ]
             },
             {
-                "year": 2024,
-                "filing_date": "03/12/2024",
-                "total_assets": "$15,800,000",
-                "capital_stock": "$6,500,000",
-                "gross_revenue": "$24,100,000",
+                "year": 2009,
+                "filing_date": "01/22/2009",
+                "total_assets": "N/A",
+                "capital_stock": "N/A",
+                "gross_revenue": "N/A",
                 "officers": [
-                    {"title": "MANAGER", "name": "CHRIS H. RADCLIFFE", "address": "100 FEDERAL STREET, BOSTON, MA 02110 USA"},
-                    {"title": "AUTHORIZED PERSON", "name": "MARK T. SULLIVAN", "address": "100 FEDERAL STREET, BOSTON, MA 02110 USA"}
+                    {"title": "REAL PROPERTY", "name": "GEOFFREY LONGSTAFF", "address": "940 CENTRE CIRCLE, SUITE 3006 ALTAMONTE SPRINGS, FL 32714 USA"},
+                    {"title": "REAL PROPERTY", "name": "CHRISTOPHER HURN", "address": "940 CENTRE CIRCLE, SUITE 3006 ALTAMONTE SPRINGS, FL 32714 USA"}
                 ]
             }
         ],
         "financial_insights": {
-            "latest_year": 2024,
-            "total_assets": "$15,800,000",
-            "capital_stock": "$6,500,000",
-            "gross_revenue": "$24,100,000",
-            "asset_growth_rate": "+27.4%",
-            "financial_health_status": "High Capital Expansion"
+            "latest_year": 2009,
+            "total_assets": "N/A",
+            "capital_stock": "N/A",
+            "gross_revenue": "N/A",
+            "asset_growth_rate": "N/A",
+            "financial_health_status": "Active Filings Recorded"
         },
         "officer_changes": [
-            {"date": "03/20/2019", "type": "ADDED", "officer_name": "CHRIS H. RADCLIFFE", "role": "MANAGER", "document_name": "Application for Registration"},
-            {"date": "03/12/2024", "type": "ADDED", "officer_name": "MARK T. SULLIVAN", "role": "AUTHORIZED PERSON", "document_name": "Annual Report 2024"}
+            {"date": "01/16/2007", "type": "ADDED", "officer_name": "GEOFFREY LONGSTAFF", "role": "REAL PROPERTY", "document_name": "Application For Registration"},
+            {"date": "01/22/2009", "type": "ADDED", "officer_name": "CHRISTOPHER HURN", "role": "REAL PROPERTY", "document_name": "Annual Report 2009"}
         ]
     },
     {
