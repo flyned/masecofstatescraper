@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ entity.entity_name }} - LLC Details & Insights</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="/" class="back-link">&larr; Back to Search</a>
+            <h1>{{ entity.entity_name }}</h1>
+            <p>Identification Number: <code>{{ entity.entity_id }}</code> &bull; Status: <span class="badge badge-success">{{ entity.status }}</span></p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Overview Grid -->
+        <div class="grid-2">
+            <section class="card">
+                <h2>LLC Profile Summary</h2>
+                <table class="detail-table">
+                    <tr><th>Entity Name</th><td>{{ entity.entity_name }}</td></tr>
+                    <tr><th>ID Number</th><td>{{ entity.entity_id }}</td></tr>
+                    <tr><th>Entity Type</th><td>{{ entity.entity_type }}</td></tr>
+                    <tr><th>Organization Date</th><td>{{ entity.organization_date }}</td></tr>
+                    <tr><th>Principal Office</th><td>{{ entity.principal_address }}</td></tr>
+                    <tr><th>Resident Agent</th><td>{{ entity.resident_agent_name }}</td></tr>
+                    <tr><th>Agent Address</th><td>{{ entity.resident_agent_address }}</td></tr>
+                </table>
+            </section>
+
+            <section class="card">
+                <h2>Financial Insights (Annual Reports)</h2>
+                {% if entity.financial_insights %}
+                <div class="financial-summary-box">
+                    <div class="fin-stat">
+                        <span class="fin-label">Total Assets</span>
+                        <span class="fin-value">{{ entity.financial_insights.total_assets }}</span>
+                    </div>
+                    <div class="fin-stat">
+                        <span class="fin-label">Capital Stock</span>
+                        <span class="fin-value">{{ entity.financial_insights.capital_stock }}</span>
+                    </div>
+                    <div class="fin-stat">
+                        <span class="fin-label">Gross Revenue</span>
+                        <span class="fin-value">{{ entity.financial_insights.gross_revenue }}</span>
+                    </div>
+                    <div class="fin-stat">
+                        <span class="fin-label">Asset Growth Rate</span>
+                        <span class="fin-value highlight">{{ entity.financial_insights.asset_growth_rate }}</span>
+                    </div>
+                </div>
+                {% else %}
+                <p>No financial metrics available in filings.</p>
+                {% endif %}
+
+                <h3 class="section-subtitle">Annual Reports History</h3>
+                {% if entity.annual_reports %}
+                <ul class="ar-list">
+                    {% for ar in entity.annual_reports %}
+                    <li>
+                        <strong>Year {{ ar.year }}</strong> (Filed: {{ ar.filing_date }}) &bull;
+                        Assets: {{ ar.total_assets }} | Capital: {{ ar.capital_stock }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No annual report entries found.</p>
+                {% endif %}
+            </section>
+        </div>
+
+        <!-- Managers & Officers -->
+        <section class="card">
+            <h2>Resolved LLC Managers & Officers</h2>
+            {% if entity.officers %}
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Title / Role</th>
+                            <th>Individual Name</th>
+                            <th>Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for off in entity.officers %}
+                        <tr>
+                            <td><span class="badge badge-primary">{{ off.title }}</span></td>
+                            <td><strong>{{ off.name }}</strong></td>
+                            <td>{{ off.address }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p>No current officers listed.</p>
+            {% endif %}
+        </section>
+
+        <!-- Officer Changes Timeline -->
+        <section class="card">
+            <h2>Automatic Officer & Manager Change History</h2>
+            <p class="subtitle">Discovered automatically by scraping and cross-referencing all filings & annual reports over time.</p>
+            {% if entity.officer_changes %}
+            <div class="timeline">
+                {% for change in entity.officer_changes %}
+                <div class="timeline-item">
+                    <div class="timeline-date">{{ change.date }}</div>
+                    <div class="timeline-content">
+                        <span class="badge badge-warning">{{ change.type }}</span>
+                        <strong>{{ change.officer_name }}</strong> added as <em>{{ change.role }}</em>
+                        <span class="doc-tag">Source: {{ change.document_name }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>No historical officer changes detected.</p>
+            {% endif %}
+        </section>
+
+        <!-- Filings -->
+        <section class="card">
+            <h2>Complete Filings History</h2>
+            {% if entity.filings %}
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Filing Date</th>
+                            <th>Document Name</th>
+                            <th>Document ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for f in entity.filings %}
+                        <tr>
+                            <td>{{ f.filing_date }}</td>
+                            <td><strong>{{ f.document_name }}</strong></td>
+                            <td><code>{{ f.document_id }}</code></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p>No filing history recorded.</p>
+            {% endif %}
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>MA Secretary of State Web Scraping System</p>
+        </div>
+    </footer>
+</body>
+</html>

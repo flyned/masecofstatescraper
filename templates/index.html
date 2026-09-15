@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MA Secretary of State LLC Owner Resolver</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>🏛️ MA Secretary of State LLC Owner Resolver & Analyzer</h1>
+            <p>Automated Web Scraping, Financial Insights, and Officer Tracking System</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="card search-card">
+            <h2>Search LLC Database</h2>
+            <form action="/" method="GET" class="search-form">
+                <div class="form-row">
+                    <div class="form-group flex-grow">
+                        <label for="query">Search Term:</label>
+                        <input type="text" id="query" name="query" value="{{ query }}" placeholder="Enter Entity Name or Individual Name..." required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Search By:</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="search_by" value="entity_name" {% if search_by == 'entity_name' %}checked{% endif %}> Entity Name</label>
+                            <label><input type="radio" name="search_by" value="individual_name" {% if search_by == 'individual_name' %}checked{% endif %}> Individual Name (Officer/Owner)</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Search Match Type:</label>
+                        <select name="search_type" id="search_type">
+                            <option value="begins_with" {% if search_type == 'begins_with' %}selected{% endif %}>Begins With</option>
+                            <option value="exact_match" {% if search_type == 'exact_match' %}selected{% endif %}>Exact Match</option>
+                            <option value="full_text" {% if search_type == 'full_text' %}selected{% endif %}>Full Text</option>
+                            <option value="soundex" {% if search_type == 'soundex' %}selected{% endif %}>Soundex (Phonetic)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group align-bottom">
+                        <button type="submit" class="btn btn-primary">🔍 Search SOS Database</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        {% if query %}
+        <section class="card">
+            <div class="results-header">
+                <h2>Search Results for "{{ query }}" ({{ results|length }} found)</h2>
+                {% if results %}
+                <div class="export-actions">
+                    <a href="/export/csv?query={{ query }}&search_by={{ search_by }}&search_type={{ search_type }}" class="btn btn-secondary">📥 Export All to CSV</a>
+                    <a href="/export/officer_changes/csv?query={{ query }}&search_by={{ search_by }}&search_type={{ search_type }}" class="btn btn-outline">📜 Export Officer Changes CSV</a>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if results %}
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Entity ID</th>
+                            <th>Entity Name</th>
+                            <th>Entity Type</th>
+                            <th>Address</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in results %}
+                        <tr>
+                            <td><code>{{ item.entity_id }}</code></td>
+                            <td><strong>{{ item.entity_name }}</strong></td>
+                            <td>{{ item.entity_type }}</td>
+                            <td>{{ item.address }}</td>
+                            <td><span class="badge badge-success">{{ item.status }}</span></td>
+                            <td>
+                                <a href="/entity/{{ item.entity_id }}" class="btn btn-sm btn-info">View LLC Profile & Insights</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <p>No matching LLC entities found in Secretary of State database.</p>
+            </div>
+            {% endif %}
+        </section>
+        {% endif %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>MA Secretary of State Web Scraping System &bull; LLC Owners & Officer Tracking Tool</p>
+        </div>
+    </footer>
+</body>
+</html>
